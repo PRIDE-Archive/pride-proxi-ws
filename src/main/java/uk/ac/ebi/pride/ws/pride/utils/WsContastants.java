@@ -8,6 +8,21 @@ public class WsContastants {
     public final static String COMPACT = "Compact";
     public final static String FULL = "Full";
 
+    public enum ResultType{
+        Compact(COMPACT),
+        Full(FULL);
+
+        private String name;
+
+        ResultType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     public enum HateoasEnum{
         next, previous, last, first, facets, files
     }

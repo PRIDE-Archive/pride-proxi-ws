@@ -21,7 +21,7 @@ import java.util.*;
 @JsonRootName("dataset")
 @JsonTypeName("dataset")
 @Relation(collectionRelation = "datasets")
-public class CompactDataset implements Serializable, PrideArchiveAPIField {
+public class CompactDataset implements Serializable, PrideArchiveAPIField, IDataset {
 
     @XmlElement
     @JsonProperty(PRIDE_PROJECT_ACCESSION)

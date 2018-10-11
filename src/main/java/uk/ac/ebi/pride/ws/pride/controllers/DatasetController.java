@@ -10,6 +10,7 @@ import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService
 import uk.ac.ebi.pride.utilities.util.Tuple;
 import uk.ac.ebi.pride.ws.pride.assemblers.TransformerMongoProject;
 import uk.ac.ebi.pride.ws.pride.models.Dataset;
+import uk.ac.ebi.pride.ws.pride.models.IDataset;
 import uk.ac.ebi.pride.ws.pride.utils.APIError;
 import uk.ac.ebi.pride.ws.pride.utils.WsContastants;
 import uk.ac.ebi.pride.ws.pride.utils.WsUtils;
@@ -49,9 +50,9 @@ public class DatasetController {
 
     })
     @RequestMapping(value = "/datasets", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public HttpEntity<List<Dataset>> facets(@RequestParam(value="pageSize", defaultValue = "100", required = false) Integer pageSize,
+    public HttpEntity<List<IDataset>> facets(@RequestParam(value="pageSize", defaultValue = "100", required = false) Integer pageSize,
                                                             @RequestParam(value="pageNumber", defaultValue = "1", required = false ) Integer pageNumber,
-                                                            @RequestParam(value="resultType", defaultValue = WsContastants.COMPACT, required = false) String resultType,
+                                                            @RequestParam(value="resultType", defaultValue = WsContastants.COMPACT, required = false) WsContastants.ResultType resultType,
                                                             @RequestParam(value="species", required = false) String species,
                                                             @RequestParam(value="accession", required = false) String accession,
                                                             @RequestParam(value="instrument", required = false) String instrument,
@@ -64,7 +65,9 @@ public class DatasetController {
         pageNumber = facetPageParams.getKey();
         pageSize   = facetPageParams.getValue();
 
-        List<Dataset> datasets  = mongoProjectService.findAll(PageRequest.of(pageNumber -1, pageSize)).getContent().stream().map( new TransformerMongoProject()).collect(Collectors.toList());
+        List<IDataset> datasets  = mongoProjectService.findAll(PageRequest.of(pageNumber -1, pageSize)).getContent()
+                .stream()
+                .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
 
         return new HttpEntity<>(datasets);
     }

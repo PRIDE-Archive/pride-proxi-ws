@@ -44,9 +44,26 @@ public class Dataset extends CompactDataset{
     @JsonProperty(PRIDE_DATA_FILE)
     private List<OntologyTerm> dataFiles = new ArrayList<>();
 
+    /**
+     * Default constructor
+     */
     public Dataset() {
     }
 
+    /**
+     * Dataset constructor with all Dataset attributes
+     * @param accession Accession
+     * @param title Title
+     * @param contacts Constants
+     * @param instruments instruments
+     * @param species species
+     * @param publications publications
+     * @param summary summary
+     * @param modifications modifications
+     * @param keywords keywords
+     * @param datasetLink datasetLink
+     * @param dataFiles dataFiles
+     */
     public Dataset(String accession, String title, Collection<Contact> contacts, Collection<String> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications, String summary, Set<OntologyTerm> modifications, Collection<OntologyTerm> keywords, OntologyTerm datasetLink, List<OntologyTerm> dataFiles) {
         super(accession, title, contacts, instruments, species, publications);
         this.summary = summary;

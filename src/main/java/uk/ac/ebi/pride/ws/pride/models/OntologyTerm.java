@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.ws.pride.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -14,6 +15,7 @@ import lombok.Data;
  * @author ypriverol on 10/10/2018.
  */
 @Data
+@Builder
 public class OntologyTerm {
 
     String accession;
