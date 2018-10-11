@@ -17,10 +17,10 @@ import java.util.List;
  *
  * @author ypriverol on 10/10/2018.
  */
-@Data
 @Builder
-public class Contact implements PrideArchiveAPIField{
+@Data
+public class Publication implements PrideArchiveAPIField{
 
-    @JsonProperty(CONTACT_PROPERTIES)
-    List<OntologyTerm> contactProperties;
+    @JsonProperty(PUBLICATION_PROPERTIES)
+    List<OntologyTerm> publicationProperties;
 }

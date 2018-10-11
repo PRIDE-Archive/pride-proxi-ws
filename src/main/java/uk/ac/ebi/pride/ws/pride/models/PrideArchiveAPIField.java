@@ -28,5 +28,6 @@ public interface PrideArchiveAPIField {
     String PRIDE_PROJECT_DATASETLINK = "datasetLink";
     String PRIDE_DATA_FILE = "dataFiles";
     String CONTACT_PROPERTIES = "contactProperties";
+    String PUBLICATION_PROPERTIES = "publicationProperties";
 
 }

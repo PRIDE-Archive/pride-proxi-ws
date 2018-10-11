@@ -1,19 +1,16 @@
 package uk.ac.ebi.pride.ws.pride.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.*;
 import org.springframework.hateoas.core.Relation;
-import uk.ac.ebi.pride.ws.pride.utils.MappingsConstants;
 
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author ypriverol
@@ -43,12 +40,12 @@ public class CompactDataset implements Serializable, PrideArchiveAPIField {
     private Collection<? extends OntologyTerm> species = new ArrayList<>();
 
     @JsonProperty(PRIDE_PROJECT_PUBLICATIONS)
-    private Set<String> publications = new HashSet<>();
+    private Set<Publication> publications = new HashSet<>();
 
     public CompactDataset() {
     }
 
-    public CompactDataset(String accession, String title, Collection<Contact> contacts, Collection<String> instruments, Collection<? extends OntologyTerm> species, Set<String> publications) {
+    public CompactDataset(String accession, String title, Collection<Contact> contacts, Collection<String> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications) {
         this.accession = accession;
         this.title = title;
         this.contacts = contacts;

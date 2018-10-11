@@ -1,17 +1,11 @@
 package uk.ac.ebi.pride.ws.pride.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.hateoas.core.Relation;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
-import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 
@@ -53,7 +47,7 @@ public class Dataset extends CompactDataset{
     public Dataset() {
     }
 
-    public Dataset(String accession, String title, Collection<Contact> contacts, Collection<String> instruments, Collection<? extends OntologyTerm> species, Set<String> publications, String summary, Set<OntologyTerm> modifications, Collection<OntologyTerm> keywords, OntologyTerm datasetLink, List<OntologyTerm> dataFiles) {
+    public Dataset(String accession, String title, Collection<Contact> contacts, Collection<String> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications, String summary, Set<OntologyTerm> modifications, Collection<OntologyTerm> keywords, OntologyTerm datasetLink, List<OntologyTerm> dataFiles) {
         super(accession, title, contacts, instruments, species, publications);
         this.summary = summary;
         this.modifications = modifications;

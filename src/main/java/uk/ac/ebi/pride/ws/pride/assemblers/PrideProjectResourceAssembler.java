@@ -1,22 +1,5 @@
 package uk.ac.ebi.pride.ws.pride.assemblers;
 
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
-import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.DefaultCvParam;
-import uk.ac.ebi.pride.archive.dataprovider.utils.Tuple;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
-import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
-import uk.ac.ebi.pride.utilities.term.CvTermReference;
-import uk.ac.ebi.pride.ws.pride.controllers.DatasetController;
-import uk.ac.ebi.pride.ws.pride.models.Dataset;
-import uk.ac.ebi.pride.ws.pride.utils.WsContastants;
-
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.stream.Collectors;
-
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
  * @author ypriverol

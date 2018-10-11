@@ -22,6 +22,8 @@ public class TransformerMongoProject implements Function<MongoPrideProject, Data
     public Dataset apply(MongoPrideProject mongoPrideProject) {
         Dataset dataset = new Dataset();
         dataset.setSummary(mongoPrideProject.getDescription());
+        dataset.setAccession(mongoPrideProject.getAccession());
+        dataset.setTitle(mongoPrideProject.getTitle());
         return  dataset;
     }
 }
