@@ -5,6 +5,8 @@ package uk.ac.ebi.pride.ws.pride.utils;
  */
 public class WsContastants {
 
+    public final static String DATASET_LINK_HTTP = "http://www.ebi.ac.uk/pride/archive/projects/";
+
     public final static String COMPACT = "Compact";
     public final static String FULL = "Full";
 

@@ -34,7 +34,7 @@ public class CompactDataset implements Serializable, PrideArchiveAPIField, IData
     private Collection<Contact> contacts = new ArrayList<>();
 
     @JsonProperty(PRIDE_PROJECT_INSTRUMENTS)
-    private Collection<String> instruments = new ArrayList<>();
+    private Collection<OntologyTerm> instruments = new ArrayList<>();
 
     @JsonProperty(PRIDE_PROJECT_SPECIES)
     private Collection<? extends OntologyTerm> species = new ArrayList<>();
@@ -45,7 +45,7 @@ public class CompactDataset implements Serializable, PrideArchiveAPIField, IData
     public CompactDataset() {
     }
 
-    public CompactDataset(String accession, String title, Collection<Contact> contacts, Collection<String> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications) {
+    public CompactDataset(String accession, String title, Collection<Contact> contacts, Collection<OntologyTerm> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications) {
         this.accession = accession;
         this.title = title;
         this.contacts = contacts;

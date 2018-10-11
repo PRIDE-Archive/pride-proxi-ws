@@ -64,7 +64,7 @@ public class Dataset extends CompactDataset{
      * @param datasetLink datasetLink
      * @param dataFiles dataFiles
      */
-    public Dataset(String accession, String title, Collection<Contact> contacts, Collection<String> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications, String summary, Set<OntologyTerm> modifications, Collection<OntologyTerm> keywords, OntologyTerm datasetLink, List<OntologyTerm> dataFiles) {
+    public Dataset(String accession, String title, Collection<Contact> contacts, Collection<OntologyTerm> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications, String summary, Set<OntologyTerm> modifications, Collection<OntologyTerm> keywords, OntologyTerm datasetLink, List<OntologyTerm> dataFiles) {
         super(accession, title, contacts, instruments, species, publications);
         this.summary = summary;
         this.modifications = modifications;

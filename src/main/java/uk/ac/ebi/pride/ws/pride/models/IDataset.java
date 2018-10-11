@@ -36,7 +36,7 @@ public interface IDataset {
      * Get instruments related to dataset
      * @return List Instruments
      */
-    public Collection<String> getInstruments();
+    public Collection<? extends OntologyTerm> getInstruments();
 
     /**
      * Get the Species

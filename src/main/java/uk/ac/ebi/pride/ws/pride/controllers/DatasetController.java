@@ -5,17 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
+import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.service.files.PrideFileMongoService;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
+import uk.ac.ebi.pride.utilities.term.CvTermReference;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 import uk.ac.ebi.pride.ws.pride.assemblers.TransformerMongoProject;
 import uk.ac.ebi.pride.ws.pride.models.Dataset;
 import uk.ac.ebi.pride.ws.pride.models.IDataset;
+import uk.ac.ebi.pride.ws.pride.models.OntologyTerm;
 import uk.ac.ebi.pride.ws.pride.utils.APIError;
 import uk.ac.ebi.pride.ws.pride.utils.WsContastants;
 import uk.ac.ebi.pride.ws.pride.utils.WsUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -68,6 +73,31 @@ public class DatasetController {
         List<IDataset> datasets  = mongoProjectService.findAll(PageRequest.of(pageNumber -1, pageSize)).getContent()
                 .stream()
                 .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
+        if(resultType == WsContastants.ResultType.Full){
+            List<String> accessions = datasets.stream().map(IDataset::getAccession).collect(Collectors.toList());
+            List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccessions(accessions);
+            datasets.forEach(x-> {
+                List<MongoPrideFile> files = mongoFiles.stream().filter( y -> y.getProjectAccessions().contains(x.getAccession())).collect(Collectors.toList());
+                ((Dataset) x).setDataFiles(files.stream()
+                        .map(file -> {
+                            String value = "";
+                            Optional<MongoCvParam> cvParam = file.getPublicFileLocations()
+                                    .stream()
+                                    .filter(accTerm -> accTerm.getAccession().equalsIgnoreCase(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession()))
+                                    .findFirst();
+                            if(cvParam.isPresent())
+                                value = cvParam.get().getValue();
+                            return OntologyTerm.builder()
+                                    .accession(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession())
+                                    .name(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getName())
+                                    .cvLabel(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getCvLabel())
+                                    .value(value)
+                                    .build();
+                        })
+                        .collect(Collectors.toList())
+                );
+            });
+        }
 
         return new HttpEntity<>(datasets);
     }
