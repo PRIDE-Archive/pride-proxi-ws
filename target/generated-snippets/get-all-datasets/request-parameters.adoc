@@ -1,0 +1,10 @@
+|===
+|Parameter|Description
+
+|`+pageSize+`
+|Number of results to fetch in a page
+
+|`+pageNumber+`
+|Identifies which page of results to fetch (1 based)
+
+|===

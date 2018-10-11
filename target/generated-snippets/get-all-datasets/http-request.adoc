@@ -1,0 +1,7 @@
+[source,http,options="nowrap"]
+----
+GET /pride/proxi/archive/datasets?pageSize=5&pageNumber=1 HTTP/1.1
+Accept: application/json
+Host: wwwdev.ebi.ac.uk
+
+----

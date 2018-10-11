@@ -1,11 +1,26 @@
 package uk.ac.ebi.pride.ws.test.integration;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import uk.ac.ebi.pride.ws.pride.Application;
 import uk.ac.ebi.pride.ws.pride.configs.MongoProjectConfig;
 import uk.ac.ebi.pride.ws.pride.configs.SwaggerConfig;
@@ -17,67 +32,45 @@ import uk.ac.ebi.pride.ws.pride.configs.SwaggerConfig;
 @AutoConfigureRestDocs
 public class ArchiveAPITest {
 
-//    MockMvc mockMvc;
-//
-//    @Rule
-//    public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
-//
-//    @Autowired
-//    private WebApplicationContext context;
-//
-//    @Value("${deployment.env}")
-//    private String  deploymentEnv;
-//
-//    @Before
-//    public void setUp() {
-//
-//        String host = "wwwdev.ebi.ac.uk/pride/ws/archive";
-//        if(deploymentEnv != null && deploymentEnv.trim().equalsIgnoreCase("prd")){
-//            host = "www.ebi.ac.uk/pride/ws/archive";
-//        }
-//
-//        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-//                .apply(documentationConfiguration(this.restDocumentation).uris()
-//                        .withScheme("http")
-//                        .withHost(host)
-//                        .withPort(80))
-//                .build();
-//    }
-//
-//    /*Files Tests*/
-//    @Test
-//    public void getFileTest() throws Exception {
-//
-//        this.mockMvc.perform(get("/files/{fileAccession}","PXF00000000015").accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andDo(document("get-file", preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()), pathParameters(
-//                        parameterWithName("fileAccession").description("The file accession id"))));
-//    }
-//
-//    @Test
-//    public void getAllFilesTest() throws Exception {
-//        this.mockMvc.perform(get("/files?filter=accession==PXF00000000015&pageSize=5&page=0").accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andDo(document("get-all-files", preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()), requestParameters(
-//                        parameterWithName("filter").description("Parameters to filter the search results. The strcuture of the filter is: field1==value1, field2==value2. Example accession==PXF00000000015. This filter allows advance querying and more information can be found at link:#_advance_filter[Advance Filter]"),
-//                        parameterWithName("pageSize").description("Number of results to fetch in a page"),
-//                        parameterWithName("page").description("Identifies which page of results to fetch"))));
-//    }
-//
-//    /*Projects API Tests*/
-//
-//    @Test
-//    public void getAllProjectsTest() throws Exception{
-//        this.mockMvc.perform(get("/datasets?pageSize=5&page=0").accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andDo(document("get-all-datasets", preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()), requestParameters(
-//                                parameterWithName("pageSize").description("Number of results to fetch in a page"),
-//                                parameterWithName("page").description("Identifies which page of results to fetch"))));
-//    }
-//
+    MockMvc mockMvc;
+
+    @Rule
+    public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
+
+    @Autowired
+    private WebApplicationContext context;
+
+    @Value("${deployment.env}")
+    private String  deploymentEnv;
+
+    @Before
+    public void setUp() {
+
+        String host = "wwwdev.ebi.ac.uk/pride/proxi/archive";
+        if(deploymentEnv != null && deploymentEnv.trim().equalsIgnoreCase("prd")){
+            host = "www.ebi.ac.uk/pride/proxi/archive";
+        }
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
+                .apply(MockMvcRestDocumentation.documentationConfiguration(this.restDocumentation).uris()
+                        .withScheme("http")
+                        .withHost(host)
+                        .withPort(80))
+                .build();
+    }
+
+    /*Projects API Tests*/
+
+    @Test
+    public void getAllProjectsTest() throws Exception{
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/datasets?pageSize=5&pageNumber=1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcRestDocumentation.document("get-all-datasets", Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint()), RequestDocumentation.requestParameters(
+                                RequestDocumentation.parameterWithName("pageSize").description("Number of results to fetch in a page"),
+                                RequestDocumentation.parameterWithName("pageNumber").description("Identifies which page of results to fetch (1 based)"))));
+    }
+
 //    @Test
 //    public void getProjectTest() throws Exception {
 //

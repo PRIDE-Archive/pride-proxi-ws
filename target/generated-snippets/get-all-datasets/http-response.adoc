@@ -1,0 +1,43 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 895
+
+[ {
+  "accession" : "PRD000001",
+  "title" : "COFRADIC proteome of unstimulated human blood platelets",
+  "contacts" : [ ],
+  "instruments" : [ ],
+  "species" : [ ],
+  "publications" : [ ]
+}, {
+  "accession" : "PRD000003",
+  "title" : "GPMDB Submission: Anonymous Data Set",
+  "contacts" : [ ],
+  "instruments" : [ ],
+  "species" : [ ],
+  "publications" : [ ]
+}, {
+  "accession" : "PRD000004",
+  "title" : "GPMDB Submission: Plasma Proteome",
+  "contacts" : [ ],
+  "instruments" : [ ],
+  "species" : [ ],
+  "publications" : [ ]
+}, {
+  "accession" : "PRD000005",
+  "title" : "GPMDB Submission: Aurum Spectra",
+  "contacts" : [ ],
+  "instruments" : [ ],
+  "species" : [ ],
+  "publications" : [ ]
+}, {
+  "accession" : "PRD000006",
+  "title" : "GPMDB Submission: Protein complexes in Saccharomyces cerevisiae",
+  "contacts" : [ ],
+  "instruments" : [ ],
+  "species" : [ ],
+  "publications" : [ ]
+} ]
+----

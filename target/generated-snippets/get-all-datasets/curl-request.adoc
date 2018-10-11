@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ curl 'http://wwwdev.ebi.ac.uk/pride/proxi/archive/datasets?pageSize=5&pageNumber=1' -i -X GET \
+    -H 'Accept: application/json'
+----
