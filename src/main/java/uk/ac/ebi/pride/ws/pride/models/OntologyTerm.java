@@ -21,5 +21,4 @@ public class OntologyTerm {
     String accession;
     String name;
     String value;
-    String cvLabel;
 }

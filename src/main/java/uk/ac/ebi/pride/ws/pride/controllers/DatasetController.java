@@ -1,9 +1,12 @@
 package uk.ac.ebi.pride.ws.pride.controllers;
 
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
 import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
@@ -74,11 +77,12 @@ public class DatasetController {
         List<IDataset> datasets  = mongoProjectService.findAll(PageRequest.of(pageNumber -1, pageSize)).getContent()
                 .stream()
                 .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
-        if(resultType == WsContastants.ResultType.Full){
-            List<String> accessions = datasets.stream().map(IDataset::getAccession).collect(Collectors.toList());
-            List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccessions(accessions);
+        if (resultType == WsContastants.ResultType.full) {
+            List<List<OntologyTerm>> accessions = datasets.stream().map(IDataset::getAccession).collect(Collectors.toList());
+            List<String> accessionsStrs = accessions.stream().flatMap(List::stream).map(OntologyTerm::getValue).collect(Collectors.toList());
+            List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccessions(accessionsStrs);
             datasets.forEach(x-> {
-                List<MongoPrideFile> files = mongoFiles.stream().filter( y -> y.getProjectAccessions().contains(x.getAccession())).collect(Collectors.toList());
+                List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(x.getAccession().get(0).getValue())).collect(Collectors.toList());
                 ((Dataset) x).setDataFiles(files.stream()
                         .map(file -> {
                             String value = "";
@@ -91,7 +95,6 @@ public class DatasetController {
                             return OntologyTerm.builder()
                                     .accession(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession())
                                     .name(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getName())
-                                    .cvLabel(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getCvLabel())
                                     .value(value)
                                     .build();
                         })
@@ -118,12 +121,12 @@ public class DatasetController {
         Optional<MongoPrideProject> mongoPrideProject  = mongoProjectService.findByAccession(accession);
         IDataset dataset = null;
         if(mongoPrideProject.isPresent())
-            dataset = new TransformerMongoProject(WsContastants.ResultType.Full).apply(mongoPrideProject.get());
+            dataset = new TransformerMongoProject(WsContastants.ResultType.full).apply(mongoPrideProject.get());
 
         if(dataset != null){
-            List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccession(dataset.getAccession());
+            List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccession(dataset.getAccession().get(0).getValue());
             IDataset finalDataset = dataset;
-            List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(finalDataset.getAccession())).collect(Collectors.toList());
+            List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(finalDataset.getAccession().get(0).getValue())).collect(Collectors.toList());
             ((Dataset)dataset).setDataFiles(files.stream()
                     .map(file -> {
                         String value = "";
@@ -136,7 +139,6 @@ public class DatasetController {
                             return OntologyTerm.builder()
                                     .accession(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession())
                                     .name(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getName())
-                                    .cvLabel(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getCvLabel())
                                     .value(value)
                                     .build();
                         })

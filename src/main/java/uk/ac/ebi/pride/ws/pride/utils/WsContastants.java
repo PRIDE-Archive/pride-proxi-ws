@@ -7,12 +7,12 @@ public class WsContastants {
 
     public final static String DATASET_LINK_HTTP = "http://www.ebi.ac.uk/pride/archive/projects/";
 
-    public final static String COMPACT = "Compact";
-    public final static String FULL = "Full";
+    public final static String COMPACT = "compact";
+    public final static String FULL = "full";
 
     public enum ResultType{
-        Compact(COMPACT),
-        Full(FULL);
+        compact(COMPACT),
+        full(FULL);
 
         private String name;
 
