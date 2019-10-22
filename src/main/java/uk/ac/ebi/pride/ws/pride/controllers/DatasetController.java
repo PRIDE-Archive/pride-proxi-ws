@@ -43,13 +43,13 @@ public class DatasetController {
 
     @Autowired
     public DatasetController(
-                             PrideFileMongoService mongoFileService,
-                             PrideProjectMongoService mongoProjectService) {
+            PrideFileMongoService mongoFileService,
+            PrideProjectMongoService mongoProjectService) {
         this.mongoFileService = mongoFileService;
         this.mongoProjectService = mongoProjectService;
     }
 
-    @ApiOperation(notes = "List of datasets in the respository", value = "datasets", nickname = "listDatasets", tags = {"datasets"} )
+    @ApiOperation(notes = "List of datasets in the respository", value = "datasets", nickname = "listDatasets", tags = {"datasets"})
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = APIError.class),
             @ApiResponse(code = 400, message = "Bad request. The requested paramters are not supported.", response = APIError.class),
@@ -59,29 +59,36 @@ public class DatasetController {
 
     })
     @RequestMapping(value = "/datasets", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public HttpEntity<List<IDataset>> listDatasets(@RequestParam(value="pageSize", defaultValue = "100", required = false) Integer pageSize,
-                                                            @RequestParam(value="pageNumber", defaultValue = "1", required = false ) Integer pageNumber,
-                                                            @RequestParam(value="resultType", defaultValue = WsContastants.COMPACT, required = false) WsContastants.ResultType resultType,
-                                                            @RequestParam(value="species", required = false) String species,
-                                                            @RequestParam(value="accession", required = false) String accession,
-                                                            @RequestParam(value="instrument", required = false) String instrument,
-                                                            @RequestParam(value="contact", required = false) String contact,
-                                                            @RequestParam(value="modification", required = false) String modification,
-                                                            @RequestParam(value="publication", required = false) String publication,
-                                                            @RequestParam(value="search", required = false) String search){
+    public HttpEntity<List<IDataset>> listDatasets(@RequestParam(value = "pageSize", defaultValue = "100", required = false) Integer pageSize,
+                                                   @RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+                                                   @RequestParam(value = "resultType", defaultValue = WsContastants.COMPACT, required = false) WsContastants.ResultType resultType,
+                                                   @RequestParam(value = "species", required = false) String species,
+                                                   @RequestParam(value = "accession", required = false) String accession,
+                                                   @RequestParam(value = "instrument", required = false) String instrument,
+                                                   @RequestParam(value = "contact", required = false) String contact,
+                                                   @RequestParam(value = "modification", required = false) String modification,
+                                                   @RequestParam(value = "publication", required = false) String publication,
+                                                   @RequestParam(value = "search", required = false) String search) {
 
         Tuple<Integer, Integer> facetPageParams = WsUtils.validatePageLimit(pageNumber, pageSize);
         pageNumber = facetPageParams.getKey();
-        pageSize   = facetPageParams.getValue();
+        pageSize = facetPageParams.getValue();
 
-        List<IDataset> datasets  = mongoProjectService.findAll(PageRequest.of(pageNumber -1, pageSize)).getContent()
-                .stream()
+//        List<IDataset> datasets  = mongoProjectService.findAll(PageRequest.of(pageNumber -1, pageSize)).getContent()
+//                .stream()
+//                .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
+
+        List<IDataset> datasets = mongoProjectService.findByMultipleAttributes(
+                PageRequest.of(pageNumber - 1, pageSize), accession, species,
+                instrument, contact, modification, publication, search)
+                .getContent().stream()
                 .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
+
         if (resultType == WsContastants.ResultType.full) {
             List<List<OntologyTerm>> accessions = datasets.stream().map(IDataset::getAccession).collect(Collectors.toList());
             List<String> accessionsStrs = accessions.stream().flatMap(List::stream).map(OntologyTerm::getValue).collect(Collectors.toList());
             List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccessions(accessionsStrs);
-            datasets.forEach(x-> {
+            datasets.forEach(x -> {
                 List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(x.getAccession().get(0).getValue())).collect(Collectors.toList());
                 ((Dataset) x).setDataFiles(files.stream()
                         .map(file -> {
@@ -90,7 +97,7 @@ public class DatasetController {
                                     .stream()
                                     .filter(accTerm -> accTerm.getAccession().equalsIgnoreCase(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession()))
                                     .findFirst();
-                            if(cvParam.isPresent())
+                            if (cvParam.isPresent())
                                 value = cvParam.get().getValue();
                             return OntologyTerm.builder()
                                     .accession(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession())
@@ -106,7 +113,7 @@ public class DatasetController {
         return new HttpEntity<>(datasets);
     }
 
-    @ApiOperation(notes = "Get dataset by Accession", value = "dataset", nickname = "getDataset", tags = {"datasets"} )
+    @ApiOperation(notes = "Get dataset by Accession", value = "dataset", nickname = "getDataset", tags = {"datasets"})
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = APIError.class),
             @ApiResponse(code = 400, message = "Bad request. The requested paramters are not supported.", response = APIError.class),
@@ -116,33 +123,33 @@ public class DatasetController {
 
     })
     @RequestMapping(value = "/datasets/{accession}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public HttpEntity<IDataset> listDatasets(@PathVariable(name = "accession", required = true) String accession){
+    public HttpEntity<IDataset> listDatasets(@PathVariable(name = "accession", required = true) String accession) {
 
-        Optional<MongoPrideProject> mongoPrideProject  = mongoProjectService.findByAccession(accession);
+        Optional<MongoPrideProject> mongoPrideProject = mongoProjectService.findByAccession(accession);
         IDataset dataset = null;
-        if(mongoPrideProject.isPresent())
+        if (mongoPrideProject.isPresent())
             dataset = new TransformerMongoProject(WsContastants.ResultType.full).apply(mongoPrideProject.get());
 
-        if(dataset != null){
+        if (dataset != null) {
             List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccession(dataset.getAccession().get(0).getValue());
             IDataset finalDataset = dataset;
             List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(finalDataset.getAccession().get(0).getValue())).collect(Collectors.toList());
-            ((Dataset)dataset).setDataFiles(files.stream()
+            ((Dataset) dataset).setDataFiles(files.stream()
                     .map(file -> {
                         String value = "";
-                            Optional<MongoCvParam> cvParam = file.getPublicFileLocations()
-                                    .stream()
-                                    .filter(accTerm -> accTerm.getAccession().equalsIgnoreCase(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession()))
-                                    .findFirst();
-                            if(cvParam.isPresent())
-                                value = cvParam.get().getValue();
-                            return OntologyTerm.builder()
-                                    .accession(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession())
-                                    .name(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getName())
-                                    .value(value)
-                                    .build();
-                        })
-                        .collect(Collectors.toList())
+                        Optional<MongoCvParam> cvParam = file.getPublicFileLocations()
+                                .stream()
+                                .filter(accTerm -> accTerm.getAccession().equalsIgnoreCase(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession()))
+                                .findFirst();
+                        if (cvParam.isPresent())
+                            value = cvParam.get().getValue();
+                        return OntologyTerm.builder()
+                                .accession(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession())
+                                .name(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getName())
+                                .value(value)
+                                .build();
+                    })
+                    .collect(Collectors.toList())
             );
         }
 
