@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.ws.test.integration;
 
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -51,15 +52,15 @@ public class ArchiveAPITest {
 
     /*Projects API Tests*/
 
-//    @Test
-//    public void getAllProjectsTest() throws Exception{
+    @Test
+    public void getAllProjectsTest() throws Exception {
 //        this.mockMvc.perform(MockMvcRequestBuilders.get("/datasets?pageSize=5&pageNumber=1").accept(MediaType.APPLICATION_JSON))
 //                .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andDo(MockMvcRestDocumentation.document("get-all-datasets", Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
 //                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint()), RequestDocumentation.requestParameters(
 //                                RequestDocumentation.parameterWithName("pageSize").description("Number of results to fetch in a page"),
 //                                RequestDocumentation.parameterWithName("pageNumber").description("Identifies which page of results to fetch (1 based)"))));
-//    }
+    }
 
 //    @Test
 //    public void getProjectTest() throws Exception {
