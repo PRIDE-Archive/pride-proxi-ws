@@ -74,15 +74,15 @@ public class DatasetController {
         pageNumber = facetPageParams.getKey();
         pageSize = facetPageParams.getValue();
 
-//        List<IDataset> datasets  = mongoProjectService.findAll(PageRequest.of(pageNumber -1, pageSize)).getContent()
-//                .stream()
-//                .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
-
-        List<IDataset> datasets = mongoProjectService.findByMultipleAttributes(
-                PageRequest.of(pageNumber - 1, pageSize), accession, species,
-                instrument, contact, modification, publication, search)
-                .getContent().stream()
+        List<IDataset> datasets = mongoProjectService.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent()
+                .stream()
                 .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
+
+//        List<IDataset> datasets = mongoProjectService.findByMultipleAttributes(
+//                PageRequest.of(pageNumber - 1, pageSize), accession, species,
+//                instrument, contact, modification, publication, search)
+//                .getContent().stream()
+//                .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
 
         if (resultType == WsContastants.ResultType.full) {
             List<List<OntologyTerm>> accessions = datasets.stream().map(IDataset::getAccession).collect(Collectors.toList());
