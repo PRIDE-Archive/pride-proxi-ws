@@ -6,20 +6,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import uk.ac.ebi.pride.ws.pride.Application;
-import uk.ac.ebi.pride.ws.pride.configs.MongoProjectConfig;
-import uk.ac.ebi.pride.ws.pride.configs.SwaggerConfig;
 
 @EnableAutoConfiguration
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {Application.class,MongoProjectConfig.class,SwaggerConfig.class})
-@TestPropertySource(locations = "classpath:application.properties")
+//@SpringBootTest(classes = {Application.class,MongoProjectConfig.class,SwaggerConfig.class})
+//@TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureRestDocs
 public class ArchiveAPITest {
 

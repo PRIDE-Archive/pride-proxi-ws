@@ -48,7 +48,7 @@ deploy_dev:
     - (rm src/main/resources/application.properties || true)
     - export HOSTNAME=$HOSTNAME_BCKUP
     #    - (envsubst < config/.application.yml > src/main/resources/application.yml) && (ls -al src/main/resources/)
-    - mvn $MAVEN_CLI_OPTS clean package
+    - mvn $MAVEN_CLI_OPTS clean package -DskipTests
     - cd target && jar_file=`ls *jar` && (ln -s $jar_file $JAR_FILE_LINK || true) && ls -al && cd ..
     - DEPLOY_DIR=$(date +"%Y%m%d_%H%M%S")
     - ssh $SERVER_USER@$DEPLOY_SERVER "bash && mkdir -p $DEPLOY_PATH/$DEPLOY_DIR"
@@ -68,7 +68,7 @@ deploy_prod:
     - (rm src/main/resources/application.properties || true)
     - export HOSTNAME=$HOSTNAME_BCKUP
     #    - (envsubst < config/.application.yml > src/main/resources/application.yml) && (ls -al src/main/resources/)
-    - mvn $MAVEN_CLI_OPTS clean package
+    - mvn $MAVEN_CLI_OPTS clean package -DskipTests
     - cd target && jar_file=`ls *jar` && (ln -s $jar_file $JAR_FILE_LINK || true) && ls -al && cd ..
     - DEPLOY_DIR=$(date +"%Y%m%d_%H%M%S")
     - ssh $SERVER_USER@$DEPLOY_SERVER "bash && mkdir -p $DEPLOY_PATH/$DEPLOY_DIR"
