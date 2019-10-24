@@ -87,7 +87,7 @@ public class SpectraController {
                                                      @RequestParam(value = "resultType", required = false) String resultType,
                                                      @RequestParam(value = "accession", required = false) String accession,
                                                      @RequestParam(value="pageNumber", defaultValue = "1" ,  required = false) int pageNumber,
-                                                     @RequestParam(value="pageSize", defaultValue = "100", required = false) int pageSize){
+                                                     @RequestParam(value="pageSize", defaultValue = "5", required = false) int pageSize){
 
 
         Page<PrideMongoPeptideEvidence> peptides = null;
@@ -103,12 +103,11 @@ public class SpectraController {
             peptides.getContent().parallelStream().forEach( peptideEvidence -> peptideEvidence.getPsmAccessions().parallelStream().forEach(psm -> {
                 try {
                     spectra.add(transformer.apply(spectralArchive.readPSM(psm.getUsi())));
-                } catch (IOException e) {
+                } catch (IOException | LinkageError e) {
                     log.error(e.getMessage(),e);
                 }
             }));
         }
-
 
         return new HttpEntity<Collection<? extends ISpectrum>>(spectra);
     }

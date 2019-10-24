@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.ws.pride.assemblers;
 
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
+import uk.ac.ebi.pride.archive.spectra.model.ArchiveSpectrum;
 import uk.ac.ebi.pride.ws.pride.models.ISpectrum;
 import uk.ac.ebi.pride.ws.pride.models.Spectrum;
 
@@ -13,8 +14,14 @@ public class TransformerMongoSpectra implements Function<PSMProvider, ISpectrum>
 
     @Override
     public ISpectrum apply(PSMProvider psmProvider) {
+        ArchiveSpectrum spectrum = ((ArchiveSpectrum) psmProvider);
+        Double[] mzs = spectrum.getMasses();
+        Double[] intensities = spectrum.getIntensities();
+
         return Spectrum.builder()
-                .usi(psmProvider.getUsi())
+                .usi(spectrum.getUsi())
+                .mzs(mzs)
+                .intensities(intensities)
                 .build();
     }
 }
