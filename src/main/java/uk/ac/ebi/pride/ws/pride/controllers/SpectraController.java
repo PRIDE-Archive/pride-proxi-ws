@@ -87,7 +87,7 @@ public class SpectraController {
                                                      @RequestParam(value = "resultType", required = false) String resultType,
                                                      @RequestParam(value = "accession", required = false) String accession,
                                                      @RequestParam(value="pageNumber", defaultValue = "1" ,  required = false) int pageNumber,
-                                                     @RequestParam(value="pageSize", defaultValue = "5", required = false) int pageSize){
+                                                     @RequestParam(value="pageSize", defaultValue = "1", required = false) int pageSize){
 
 
         Page<PrideMongoPeptideEvidence> peptides = null;
