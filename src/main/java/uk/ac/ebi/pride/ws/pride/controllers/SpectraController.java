@@ -90,18 +90,25 @@ public class SpectraController {
                                                      @RequestParam(value="pageSize", defaultValue = "100", required = false) int pageSize){
 
 
-        Page<PrideMongoPeptideEvidence> peptides = moleculesMongoService.findPeptideEvidences(usi, accession,  PageRequest.of(pageNumber, pageSize));
-        ConcurrentLinkedQueue<ISpectrum> spectra = new ConcurrentLinkedQueue<>();
+        Page<PrideMongoPeptideEvidence> peptides = null;
+        if((usi != null && !usi.isEmpty()) || (accession != null && !accession.isEmpty()))
+            peptides = moleculesMongoService.findPeptideEvidences(usi, accession,  PageRequest.of(pageNumber, pageSize));
+        else
+            peptides = moleculesMongoService.listPeptideEvidences(PageRequest.of(pageNumber, pageSize));
 
+        ConcurrentLinkedQueue<ISpectrum> spectra = new ConcurrentLinkedQueue<>();
         TransformerMongoSpectra transformer = new TransformerMongoSpectra();
 
-        peptides.getContent().parallelStream().forEach( peptideEvidence -> peptideEvidence.getPsmAccessions().parallelStream().forEach(psm -> {
-            try {
-                spectra.add(transformer.apply(spectralArchive.readPSM(psm.getUsi())));
-            } catch (IOException e) {
-                log.error(e.getMessage(),e);
-            }
-        }));
+        if(peptides != null){
+            peptides.getContent().parallelStream().forEach( peptideEvidence -> peptideEvidence.getPsmAccessions().parallelStream().forEach(psm -> {
+                try {
+                    spectra.add(transformer.apply(spectralArchive.readPSM(psm.getUsi())));
+                } catch (IOException e) {
+                    log.error(e.getMessage(),e);
+                }
+            }));
+        }
+
 
         return new HttpEntity<Collection<? extends ISpectrum>>(spectra);
     }
