@@ -53,42 +53,34 @@ public class MongoProjectConfig extends AbstractPrideMongoConfiguration {
         return mongoProjectDatabase;
     }
 
-    @Override
     public String getUser() {
         return user;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
     public String getAuthenticationDatabse() {
         return authenticationDatabse;
     }
 
-    @Override
     public String getMongoHosts() {
         return mongoHosts;
     }
 
-    @Override
     public String getMongoPorts() {
         return mongoPorts;
     }
 
-    @Override
     public String getPort() {
         return port;
     }
 
-    @Override
     public String getSingleMachine() {
         return singleMachine;
     }
 
-    @Override
     public String getMongoHost() {
         return mongoHost;
     }

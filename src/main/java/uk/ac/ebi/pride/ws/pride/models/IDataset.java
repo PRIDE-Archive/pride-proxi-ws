@@ -1,10 +1,7 @@
 package uk.ac.ebi.pride.ws.pride.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,7 +21,7 @@ public interface IDataset {
      * Get Accession of the Dataset
      * @return Dataset Accession
      */
-    public String getAccession();
+    public List<OntologyTerm> getAccession();
 
     /**
      * Get contacts related with the dataset

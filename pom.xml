@@ -15,10 +15,13 @@
     <name>PRIDE Archive PROXI WS</name>
 
     <properties>
-        <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.3</uk.ac.ebi.pride.architectural-pride-tdd.version>
-        <uk.ac.ebi.pride.architectural-pride-spring.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-spring.version>
-        <uk.ac.ebi.pride.archive.pride-mongodb-repo.version>1.0.2-springboot-SNAPSHOT</uk.ac.ebi.pride.archive.pride-mongodb-repo.version>
-        <uk.ac.ebi.pride.archive.data-provider.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
+        <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.4-SNAPSHOT
+        </uk.ac.ebi.pride.architectural-pride-tdd.version>
+        <uk.ac.ebi.pride.archive.pride-solr-indexes.version>1.0.3-SNAPSHOT
+        </uk.ac.ebi.pride.archive.pride-solr-indexes.version>
+        <uk.ac.ebi.pride.archive.pride-mongodb-repo.version>1.0.3-SNAPSHOT
+        </uk.ac.ebi.pride.archive.pride-mongodb-repo.version>
+        <uk.ac.ebi.pride.archive.data-provider.version>1.0.1-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
         <io.springfox.swagger.version>2.7.0</io.springfox.swagger.version>
     </properties>
 
@@ -49,6 +52,24 @@
             <groupId>uk.ac.ebi.pride.archive</groupId>
             <artifactId>pride-mongodb-repo</artifactId>
             <version>${uk.ac.ebi.pride.archive.pride-mongodb-repo.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride.archive</groupId>
+                    <artifactId>data-provider-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>pride-solr-indexes</artifactId>
+            <version>${uk.ac.ebi.pride.archive.pride-solr-indexes.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride.archive</groupId>
+                    <artifactId>data-provider-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -142,6 +163,14 @@
                 </dependencies>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <skipSource>true</skipSource>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.7</version>
                 <executions>
@@ -173,8 +202,43 @@
                     <excludeDevtools>true</excludeDevtools>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <excludes>
+                        <exclude>*.properties</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>AAP</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>nexus-ebi-release-repo</id>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
+        </repository>
+        <repository>
+            <id>nexus-ebi-snapshot-repo</id>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
+        </repository>
+        <repository>
+            <id>pst-release</id>
+            <name>EBI Nexus Repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
+        </repository>
+        <repository>
+            <id>pst-snapshots</id>
+            <name>EBI Nexus Snapshots Repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
+        </repository>
+    </repositories>
 
     <scm>
         <connection>scm:git:https://github.com/PRIDE-Archive/pride-solr-indexes.git</connection>
