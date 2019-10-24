@@ -15,6 +15,7 @@ import org.springframework.hateoas.RelProvider;
 import org.springframework.hateoas.core.EvoInflectorRelProvider;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import uk.ac.ebi.pride.archive.spectra.configs.AWS3Configuration;
 import uk.ac.ebi.pride.ws.pride.configs.MongoProjectConfig;
 import uk.ac.ebi.pride.ws.pride.configs.SolrCloudConfig;
 import uk.ac.ebi.pride.ws.pride.configs.SwaggerConfig;
@@ -30,7 +31,7 @@ import uk.ac.ebi.pride.ws.pride.utils.SimpleCORSFilter;
 
 @EnableSwagger2
 @SpringBootApplication(scanBasePackageClasses = {DatasetController.class,
-        SimpleCORSFilter.class, MongoProjectConfig.class, SolrCloudConfig.class, SwaggerConfig.class})
+        SimpleCORSFilter.class, MongoProjectConfig.class, SolrCloudConfig.class, AWS3Configuration.class ,SwaggerConfig.class})
 public class Application {
 
     public static void main(String[] args) {

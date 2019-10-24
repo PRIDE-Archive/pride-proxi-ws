@@ -92,12 +92,6 @@ public class DatasetController {
         List<IDataset> datasets = mongoProjectService.findByMultipleAccessions(prjAccessions).stream()
                 .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
 
-//        List<IDataset> datasets = mongoProjectService.findByMultipleAttributes(
-//                PageRequest.of(pageNumber - 1, pageSize), accession, species,
-//                instrument, contact, modification, publication, search)
-//                .getContent().stream()
-//                .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
-
         if (resultType == WsContastants.ResultType.full) {
             List<List<OntologyTerm>> accessions = datasets.stream().map(IDataset::getAccession).collect(Collectors.toList());
             List<String> accessionsStrs = accessions.stream().flatMap(List::stream).map(OntologyTerm::getValue).collect(Collectors.toList());
