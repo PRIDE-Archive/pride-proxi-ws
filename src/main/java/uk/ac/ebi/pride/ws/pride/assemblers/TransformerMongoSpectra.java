@@ -19,7 +19,7 @@ public class TransformerMongoSpectra implements Function<PSMProvider, ISpectrum>
         ArchiveSpectrum spectrum = ((ArchiveSpectrum) psmProvider);
         Double[] mzs = spectrum.getMasses();
         Double[] intensities = spectrum.getIntensities();
-        log.debug("Spectra retrirved -- " + spectrum.getUsi());
+        log.debug("Spectra retrieved -- " + spectrum.getUsi());
 
         return Spectrum.builder()
                 .usi(spectrum.getUsi())

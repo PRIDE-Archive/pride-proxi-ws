@@ -31,7 +31,7 @@ import uk.ac.ebi.pride.ws.pride.utils.SimpleCORSFilter;
 
 @EnableSwagger2
 @SpringBootApplication(scanBasePackageClasses = {DatasetController.class,
-        SimpleCORSFilter.class, MongoProjectConfig.class, SolrCloudConfig.class, AWS3Configuration.class ,SwaggerConfig.class})
+        SimpleCORSFilter.class, MongoProjectConfig.class, SolrCloudConfig.class, AWS3Configuration.class ,SwaggerConfig.class, SimpleCORSFilter.class})
 public class Application {
 
     public static void main(String[] args) {
