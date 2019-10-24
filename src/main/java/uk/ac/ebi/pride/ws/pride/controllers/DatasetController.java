@@ -4,7 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,9 @@ import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.service.files.PrideFileMongoService;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
+import uk.ac.ebi.pride.solr.indexes.pride.model.PrideProjectField;
+import uk.ac.ebi.pride.solr.indexes.pride.model.PrideSolrProject;
+import uk.ac.ebi.pride.solr.indexes.pride.services.SolrProjectService;
 import uk.ac.ebi.pride.utilities.term.CvTermReference;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 import uk.ac.ebi.pride.ws.pride.assemblers.TransformerMongoProject;
@@ -23,6 +28,7 @@ import uk.ac.ebi.pride.ws.pride.utils.APIError;
 import uk.ac.ebi.pride.ws.pride.utils.WsContastants;
 import uk.ac.ebi.pride.ws.pride.utils.WsUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,15 +42,15 @@ import java.util.stream.Collectors;
 @RestController
 public class DatasetController {
 
-
-    final PrideFileMongoService mongoFileService;
-
-    final PrideProjectMongoService mongoProjectService;
+    private final SolrProjectService solrProjectService;
+    private final PrideFileMongoService mongoFileService;
+    private final PrideProjectMongoService mongoProjectService;
 
     @Autowired
     public DatasetController(
-            PrideFileMongoService mongoFileService,
+            SolrProjectService solrProjectService, PrideFileMongoService mongoFileService,
             PrideProjectMongoService mongoProjectService) {
+        this.solrProjectService = solrProjectService;
         this.mongoFileService = mongoFileService;
         this.mongoProjectService = mongoProjectService;
     }
@@ -74,8 +80,16 @@ public class DatasetController {
         pageNumber = facetPageParams.getKey();
         pageSize = facetPageParams.getValue();
 
-        List<IDataset> datasets = mongoProjectService.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent()
-                .stream()
+        String sortFields = PrideProjectField.PROJECT_SUBMISSION_DATE;
+        Sort.Direction sortDirection = Sort.Direction.DESC;
+        String dateGap = "";
+        List<String> keyword = Collections.singletonList("*:*");
+
+        Page<PrideSolrProject> solrProjects = solrProjectService.findByKeyword(keyword, search, PageRequest.of(pageNumber, pageSize, sortDirection, sortFields.split(",")), dateGap);
+
+        List<String> prjAccessions = solrProjects.stream().map(PrideSolrProject::getAccession).collect(Collectors.toList());
+
+        List<IDataset> datasets = mongoProjectService.findByMultipleAccessions(prjAccessions).stream()
                 .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
 
 //        List<IDataset> datasets = mongoProjectService.findByMultipleAttributes(

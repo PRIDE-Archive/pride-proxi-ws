@@ -1,6 +1,6 @@
 server:
   port: $port
-  servlet.contextPath: /v0.1
+  servlet.contextPath: /pride/proxi/archive/v0.1
 
 # LOGGING Properties
 logging:
