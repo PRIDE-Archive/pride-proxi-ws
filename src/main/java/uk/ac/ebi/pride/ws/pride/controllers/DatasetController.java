@@ -75,6 +75,7 @@ public class DatasetController {
                                                    @RequestParam(value = "publication", required = false) String publicationsStr,
                                                    @RequestParam(value = "search", required = false) String searchStr) {
 
+        pageNumber = pageNumber - 1; //1st page as per proxi-api spec is 1 but for solr it's 0
         Tuple<Integer, Integer> facetPageParams = WsUtils.validatePageLimit(pageNumber, pageSize);
         pageNumber = facetPageParams.getKey();
         pageSize = facetPageParams.getValue();
@@ -125,7 +126,8 @@ public class DatasetController {
         }
 
         if (contact != null) {
-            filters.add(PrideProjectFieldEnum.PROJECT_PI_NAMES.getFilterField() + FILTER_SEPARATOR + contact.trim());
+            //Have to choose between LAB_HEAD or SUBMITTER.. trying to filter by both will result in 'AND' condition
+            //filters.add(PrideProjectFieldEnum.PROJECT_PI_NAMES.getFilterField() + FILTER_SEPARATOR + contact.trim());
             filters.add(PrideProjectFieldEnum.PROJECT_SUBMITTER.getFilterField() + FILTER_SEPARATOR + contact.trim());
         }
 
