@@ -39,9 +39,4 @@ target/
 .idea/
 
 pride-proxi-ws.iml
-pride-archive-proxi.log.2019-10-24.0.gz
-pride-archive-proxi.log.2019-10-24.083208778723719.tmp
-pride-archive-proxi.log.2019-10-25.0.gz
-pride-archive-proxi.log.2019-10-26.0.gz
-pride-archive-proxi.log.2019-10-28.0.gz
-pride-archive-proxi.log.2019-10-29.0.gz
+pride-archive-proxi.log.*
