@@ -18,17 +18,21 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.spectra.services.S3SpectralArchive;
 import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
+import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.service.molecules.PrideMoleculesMongoService;
+import uk.ac.ebi.pride.utilities.util.Tuple;
 import uk.ac.ebi.pride.ws.pride.assemblers.TransformerMongoProject;
 import uk.ac.ebi.pride.ws.pride.assemblers.TransformerMongoSpectra;
 import uk.ac.ebi.pride.ws.pride.models.ISpectrum;
 import uk.ac.ebi.pride.ws.pride.models.Spectrum;
+import uk.ac.ebi.pride.ws.pride.models.SpectrumStatus;
 import uk.ac.ebi.pride.ws.pride.utils.APIError;
 import uk.ac.ebi.pride.ws.pride.utils.WsContastants;
 import uk.ac.ebi.pride.ws.pride.utils.WsUtils;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -84,30 +88,37 @@ public class SpectraController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     //Todo: All the spectra retrieve methods should be done using java.util.concurrent.CompletableFuture from Spring.
     public HttpEntity<Collection<?  extends ISpectrum>> getSpectrumBy(@RequestParam(value = "usi", required = false) String usi,
-                                                     @RequestParam(value = "resultType", required = false) String resultType,
+                                                     @RequestParam(value = "peptideSequence", required = false) String peptideSequence,
+                                                     @RequestParam(value = "resultType", defaultValue = "compact", required = false) WsContastants.ResultType resultType,
                                                      @RequestParam(value = "accession", required = false) String accession,
                                                      @RequestParam(value="pageNumber", defaultValue = "1" ,  required = false) int pageNumber,
                                                      @RequestParam(value="pageSize", defaultValue = "1", required = false) int pageSize){
 
 
-        Page<PrideMongoPeptideEvidence> peptides = null;
-        if((usi != null && !usi.isEmpty()) || (accession != null && !accession.isEmpty()))
-            peptides = moleculesMongoService.findPeptideEvidences(usi, accession,  PageRequest.of(pageNumber, pageSize));
+        Page<PrideMongoPsmSummaryEvidence> peptides = null;
+        if(usi != null && !usi.isEmpty())
+            peptides = moleculesMongoService
+                    .findPsmSummaryEvidences(Collections.singletonList(usi), PageRequest.of(pageNumber, pageSize));
+        else if(accession != null || peptideSequence != null)
+            peptides = moleculesMongoService
+                    .findPsmSummaryEvidences(accession, "", "", peptideSequence,
+                    PageRequest.of(pageNumber, pageSize));
         else
-            peptides = moleculesMongoService.listPeptideEvidences(PageRequest.of(pageNumber, pageSize));
+            peptides = moleculesMongoService.listPsmSummaryEvidences(PageRequest.of(pageNumber, pageSize));
 
         ConcurrentLinkedQueue<ISpectrum> spectra = new ConcurrentLinkedQueue<>();
-        TransformerMongoSpectra transformer = new TransformerMongoSpectra();
+        TransformerMongoSpectra transformer = new TransformerMongoSpectra(SpectrumStatus.READABLE);
 
-        if(peptides != null){
-            peptides.getContent().parallelStream().forEach( peptideEvidence -> peptideEvidence.getPsmAccessions().parallelStream().forEach(psm -> {
-                try {
-                    spectra.add(transformer.apply(spectralArchive.readPSM(psm.getUsi())));
-                } catch (IOException | LinkageError e) {
-                    log.error(e.getMessage(),e);
-                }
-            }));
-        }
+        peptides.getContent().parallelStream().forEach( psmEvidence ->  {
+            try {
+                if(resultType == WsContastants.ResultType.compact)
+                    spectra.add(transformer.apply(psmEvidence));
+                else
+                    spectra.add(transformer.apply(spectralArchive.readPSM(psmEvidence.getUsi())));
+            } catch (IOException e) {
+                log.error(e.getMessage(),e);
+            }
+        });
 
         return new HttpEntity<Collection<? extends ISpectrum>>(spectra);
     }
