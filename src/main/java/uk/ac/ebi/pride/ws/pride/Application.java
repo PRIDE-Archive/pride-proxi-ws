@@ -21,6 +21,7 @@ import uk.ac.ebi.pride.ws.pride.configs.SimpleCORSFilter;
 import uk.ac.ebi.pride.ws.pride.configs.SolrCloudConfig;
 import uk.ac.ebi.pride.ws.pride.configs.SwaggerConfig;
 import uk.ac.ebi.pride.ws.pride.controllers.DatasetController;
+import uk.ac.ebi.pride.ws.pride.controllers.SpectraController;
 
 /**
  * Retrieve the datasets {@link uk.ac.ebi.pride.archive.dataprovider.project.ProjectProvider} from PRIDE Archive and the corresponding information.
@@ -30,7 +31,7 @@ import uk.ac.ebi.pride.ws.pride.controllers.DatasetController;
  */
 
 @EnableSwagger2
-@SpringBootApplication(scanBasePackageClasses = {DatasetController.class, MongoProjectConfig.class, SolrCloudConfig.class, AWS3Configuration.class ,SwaggerConfig.class, SimpleCORSFilter.class})
+@SpringBootApplication(scanBasePackageClasses = {DatasetController.class, SpectraController.class, MongoProjectConfig.class, SolrCloudConfig.class, AWS3Configuration.class ,SwaggerConfig.class, SimpleCORSFilter.class})
 public class Application {
 
     public static void main(String[] args) {

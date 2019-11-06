@@ -15,30 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.spectra.services.S3SpectralArchive;
-import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.service.molecules.PrideMoleculesMongoService;
-import uk.ac.ebi.pride.utilities.util.Tuple;
-import uk.ac.ebi.pride.ws.pride.assemblers.TransformerMongoProject;
 import uk.ac.ebi.pride.ws.pride.assemblers.TransformerMongoSpectra;
 import uk.ac.ebi.pride.ws.pride.models.ISpectrum;
-import uk.ac.ebi.pride.ws.pride.models.Spectrum;
 import uk.ac.ebi.pride.ws.pride.models.SpectrumStatus;
 import uk.ac.ebi.pride.ws.pride.utils.APIError;
 import uk.ac.ebi.pride.ws.pride.utils.WsContastants;
-import uk.ac.ebi.pride.ws.pride.utils.WsUtils;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
 @RestController
 @Slf4j
 public class SpectraController {
@@ -52,32 +41,6 @@ public class SpectraController {
         this.spectralArchive = spectralArchive;
         this.moleculesMongoService = moleculesMongoService;
     }
-
-//    @ApiOperation(notes = "Get an Spectrum by the specific usi", value = "spectra", nickname = "getSpectrum", tags = {"spectra"} )
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK", response = APIError.class),
-//            @ApiResponse(code = 500, message = "Internal Server Error", response = APIError.class)
-//    })
-//    @RequestMapping(value = "/spectrum", method = RequestMethod.GET,
-//            produces = {MediaType.APPLICATION_JSON_VALUE})
-//    public HttpEntity<Object> getSpectrum(@RequestParam(value = "usi", required = true) String usi){
-//
-//        Optional<PSMProvider> spectrumOptional = Optional.empty();
-//        SpectraResourceAssembler assembler = new SpectraResourceAssembler(SpectraEvidenceController.class,
-//                SpectrumEvidenceResource.class);
-//        try {
-//            PSMProvider evidence = spectralArchive.readPSM(usi);
-//            if(evidence != null)
-//                spectrumOptional = Optional.of(evidence);
-//        } catch (Exception e) {
-//            log.error(e.getMessage(),e);
-//        }
-//
-//        return spectrumOptional.<ResponseEntity<Object>>map(spectrum ->
-//                new ResponseEntity<>(assembler.toResource(spectrum), HttpStatus.OK))
-//                .orElseGet(() -> new ResponseEntity<>(WsContastants.PROTEIN_NOT_FOUND
-//                        + usi + WsContastants.CONTACT_PRIDE, new HttpHeaders(), HttpStatus.BAD_REQUEST));
-//    }
 
     @ApiOperation(notes = "Get an Spectrum by the Project Accession or Assay Accession usi", value = "spectra", nickname = "getSpectrumBy", tags = {"spectra"} )
     @ApiResponses({

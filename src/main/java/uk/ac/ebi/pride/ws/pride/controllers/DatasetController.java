@@ -10,8 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.files.MongoPrideFile;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.mongodb.archive.service.files.PrideFileMongoService;
 import uk.ac.ebi.pride.mongodb.archive.service.projects.PrideProjectMongoService;
@@ -153,7 +153,7 @@ public class DatasetController {
                 ((Dataset) x).setDataFiles(files.stream()
                         .map(file -> {
                             String value = "";
-                            Optional<MongoCvParam> cvParam = file.getPublicFileLocations()
+                            Optional<CvParam> cvParam = file.getPublicFileLocations()
                                     .stream()
                                     .filter(accTerm -> accTerm.getAccession().equalsIgnoreCase(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession()))
                                     .findFirst();
@@ -197,7 +197,7 @@ public class DatasetController {
             ((Dataset) dataset).setDataFiles(files.stream()
                     .map(file -> {
                         String value = "";
-                        Optional<MongoCvParam> cvParam = file.getPublicFileLocations()
+                        Optional<CvParam> cvParam = file.getPublicFileLocations()
                                 .stream()
                                 .filter(accTerm -> accTerm.getAccession().equalsIgnoreCase(CvTermReference.PRIDE_FTP_PROTOCOL_URL.getAccession()))
                                 .findFirst();
