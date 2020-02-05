@@ -1,10 +1,10 @@
 package uk.ac.ebi.pride.ws.pride.assemblers;
 
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.archive.dataprovider.reference.ReferenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.user.ContactProvider;
-import uk.ac.ebi.pride.mongodb.archive.model.param.MongoCvParam;
 import uk.ac.ebi.pride.mongodb.archive.model.projects.MongoPrideProject;
 import uk.ac.ebi.pride.utilities.term.CvTermReference;
 import uk.ac.ebi.pride.ws.pride.models.*;
@@ -98,7 +98,7 @@ public class TransformerMongoProject implements Function<MongoPrideProject, IDat
         return ontologyTerms;
     }
 
-    private Collection<? extends OntologyTerm> transformSpecies(List<Tuple<MongoCvParam, List<MongoCvParam>>> samplesDescription) {
+    private Collection<? extends OntologyTerm> transformSpecies(List<Tuple<CvParam, Set<CvParam>>> samplesDescription) {
         List<OntologyTerm> species = new ArrayList<>();
         samplesDescription.forEach(x -> {
             if (x.getKey().getAccession().equals(CvTermReference.EFO_ORGANISM.getAccession())) {
@@ -207,7 +207,7 @@ public class TransformerMongoProject implements Function<MongoPrideProject, IDat
                 .build();
     }
 
-    private Set<OntologyTerm> transformModifications(Collection<MongoCvParam> ptmList) {
+    private Set<OntologyTerm> transformModifications(Collection<CvParam> ptmList) {
         return ptmList.stream().map(x -> OntologyTerm.builder()
                 .accession(x.getAccession())
                 .name(x.getName())
