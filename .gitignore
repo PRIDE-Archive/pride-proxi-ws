@@ -39,3 +39,4 @@ target/
 .idea/
 
 pride-proxi-ws.iml
+pride-archive-proxi.log.*
