@@ -1,12 +1,12 @@
-package uk.ac.ebi.pride.ws.pride.assemblers;
+package uk.ac.ebi.pride.ws.pride.assemblers.molecules;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.spectra.model.ArchiveSpectrum;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
-import uk.ac.ebi.pride.ws.pride.models.ISpectrum;
-import uk.ac.ebi.pride.ws.pride.models.Spectrum;
-import uk.ac.ebi.pride.ws.pride.models.SpectrumStatus;
+import uk.ac.ebi.pride.ws.pride.models.molecules.ISpectrum;
+import uk.ac.ebi.pride.ws.pride.models.molecules.Spectrum;
+import uk.ac.ebi.pride.ws.pride.models.molecules.SpectrumStatus;
 
 /**
  *

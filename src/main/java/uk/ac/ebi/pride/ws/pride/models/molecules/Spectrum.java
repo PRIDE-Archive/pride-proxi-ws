@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.ws.pride.models;
+package uk.ac.ebi.pride.ws.pride.models.molecules;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -8,7 +8,6 @@ import lombok.Data;
 import org.springframework.hateoas.core.Relation;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 @Data
 @XmlRootElement(name = "spectrum")
@@ -16,7 +15,7 @@ import java.util.List;
 @JsonTypeName("spectrum")
 @Relation(collectionRelation = "spectra")
 @Builder
-public class Spectrum implements ISpectrum{
+public class Spectrum implements ISpectrum {
 
     @JsonProperty("usi")
     String usi;
