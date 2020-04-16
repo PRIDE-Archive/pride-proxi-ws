@@ -11,10 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.pride.ws.pride.models.molecules.Psm;
 import uk.ac.ebi.pride.ws.pride.utils.APIError;
-
-import java.util.Collection;
+import uk.ac.ebi.pride.ws.pride.utils.Error;
 
 @RestController
 @Slf4j
@@ -28,7 +26,8 @@ public class ProteinController {
     })
     @RequestMapping(value = "/proteins", method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public HttpEntity<Collection<? extends Psm>> getProteins() {
-        return new ResponseEntity("Not implemented", HttpStatus.NOT_IMPLEMENTED);
+    public HttpEntity<Error> getProteins() {
+        return new ResponseEntity<>(new Error(HttpStatus.NOT_IMPLEMENTED.value(), HttpStatus.NOT_IMPLEMENTED.getReasonPhrase()),
+                HttpStatus.NOT_IMPLEMENTED);
     }
 }

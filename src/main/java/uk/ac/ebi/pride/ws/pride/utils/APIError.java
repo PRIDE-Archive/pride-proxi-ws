@@ -34,6 +34,12 @@ public class APIError {
         this.debugMessage = ex.getLocalizedMessage();
     }
 
+    APIError(HttpStatus status, String message) {
+        this();
+        this.status = status;
+        this.message = message;
+    }
+
     APIError(HttpStatus status, String message, Throwable ex) {
         this();
         this.status = status;
