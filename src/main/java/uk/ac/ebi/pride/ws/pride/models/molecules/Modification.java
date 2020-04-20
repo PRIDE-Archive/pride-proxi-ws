@@ -4,10 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 import uk.ac.ebi.pride.ws.pride.models.OntologyTerm;
 
+import java.util.List;
+
 @Builder
 @Data
 public class Modification {
     private String accession;
     private Integer position;
-    private OntologyTerm[] scores;
+    private List<OntologyTerm> scores;
 }

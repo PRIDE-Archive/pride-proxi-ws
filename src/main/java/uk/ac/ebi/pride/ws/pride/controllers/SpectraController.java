@@ -21,8 +21,8 @@ import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.service.molecules.PrideMoleculesMongoService;
 import uk.ac.ebi.pride.utilities.util.StringUtils;
 import uk.ac.ebi.pride.utilities.util.Tuple;
-import uk.ac.ebi.pride.ws.pride.assemblers.molecules.TransformerMongoPsm;
 import uk.ac.ebi.pride.ws.pride.assemblers.molecules.TransformerMongoSpectra;
+import uk.ac.ebi.pride.ws.pride.assemblers.molecules.TransformerPsm;
 import uk.ac.ebi.pride.ws.pride.models.molecules.ISpectrum;
 import uk.ac.ebi.pride.ws.pride.models.molecules.Psm;
 import uk.ac.ebi.pride.ws.pride.models.molecules.SpectrumStatus;
@@ -136,7 +136,7 @@ public class SpectraController {
             peptides = moleculesMongoService.findPsmSummaryEvidences(Collections.singletonList(usi), PageRequest.of(pageNumber, pageSize));
         else if (!StringUtils.isEmpty(accession) || !StringUtils.isEmpty(msrun) || !StringUtils.isEmpty(scan)
                 || !StringUtils.isEmpty(peptideSequence) || charge != null || !StringUtils.isEmpty(modification)
-                || !StringUtils.isEmpty(peptidoform))
+                || !StringUtils.isEmpty(peptidoform)) //TODO peptidoform should be a separate field in DB..regex is too slow
             peptides = moleculesMongoService
                     .findPsmSummaryEvidences(accession, msrun, scan,
                             peptideSequence, charge, modification, peptidoform,
@@ -148,9 +148,9 @@ public class SpectraController {
         peptides.getContent().parallelStream().forEach(psmEvidence -> {
             try {
                 if (resultType == WsContastants.ResultType.compact)
-                    psms.add(TransformerMongoPsm.apply(psmEvidence));
-//                else
-//                    psms.add(transformer.apply(spectralArchive.readPSM(psmEvidence.getUsi())));
+                    psms.add(TransformerPsm.apply(psmEvidence));
+                else
+                    psms.add(TransformerPsm.apply(psmEvidence, spectralArchive.readPSM(psmEvidence.getUsi())));
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
