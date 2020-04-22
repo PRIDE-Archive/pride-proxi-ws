@@ -33,7 +33,7 @@ public class TransformerPsm {
             CvTermReference.MS_MSGF_EVALUE.getAccession(),
             CvTermReference.MS_MSGF_QVALUE.getAccession(),
             CvTermReference.MS_MSGF_DENOVOSCORE.getAccession(),
-            CvTermReference.MS_MSGF_RAWSCORE.getAccession(), 
+            CvTermReference.MS_MSGF_RAWSCORE.getAccession(),
             CvTermReference.MS_MSGF_SPECEVALUE.getAccession(),
             CvTermReference.MS_MSGF_PEPQVALUE.getAccession(),
             CvTermReference.MS_SEQUEST_DELTA_CN.getAccession(),
@@ -51,30 +51,28 @@ public class TransformerPsm {
         ArchiveSpectrum spectrum = (ArchiveSpectrum) readPSM;
 
         Set<OntologyTerm> attributes = spectrum.getAttributes().stream()
-                .map(x -> {
-                   return OntologyTerm.builder()
-                           .accession(((CvParamProvider) x).getAccession())
-                           .name(((CvParamProvider) x).getName())
-                           .value(((CvParamProvider) x).getValue())
-                           .build();
-                }).collect(Collectors.toSet());
+                .map(x -> OntologyTerm.builder()
+                        .accession(x.getAccession())
+                        .name(x.getName())
+                        .value(x.getValue())
+                        .build()).collect(Collectors.toSet());
 
         Set<OntologyTerm> searchEngineScores = attributes.stream().filter(x -> ALLOW_SEARCH_ENGINES.contains(x.getAccession())).collect(Collectors.toSet());
         List<Modification> mods = new ArrayList<>();
-        if(readPSM.getModifications() != null && readPSM.getModifications().size() > 0 ){
-            for(IdentifiedModificationProvider mod: readPSM.getModifications()){
-                for(Tuple<Integer, Set<? extends CvParamProvider>> tuplePosition: mod.getPositionMap()){
+        if (readPSM.getModifications() != null && readPSM.getModifications().size() > 0) {
+            for (IdentifiedModificationProvider mod : readPSM.getModifications()) {
+                for (Tuple<Integer, Set<? extends CvParamProvider>> tuplePosition : mod.getPositionMap()) {
                     List<OntologyTerm> scores = new ArrayList<>();
-                    if(tuplePosition.getValue() != null){
-                      scores = tuplePosition.getValue()
-                              .stream()
-                              .map( x->
-                                      OntologyTerm.builder()
-                                              .accession(((CvParamProvider) x).getAccession())
-                                              .name(((CvParamProvider) x).getName())
-                                              .value(((CvParamProvider) x).getValue())
-                                              .build())
-                              .collect(Collectors.toList());
+                    if (tuplePosition.getValue() != null) {
+                        scores = tuplePosition.getValue()
+                                .stream()
+                                .map(x ->
+                                        OntologyTerm.builder()
+                                                .accession(x.getAccession())
+                                                .name(x.getName())
+                                                .value(x.getValue())
+                                                .build())
+                                .collect(Collectors.toList());
                     }
                     Modification newMod = Modification.builder()
                             .accession(mod.getModificationCvTerm().getAccession())
