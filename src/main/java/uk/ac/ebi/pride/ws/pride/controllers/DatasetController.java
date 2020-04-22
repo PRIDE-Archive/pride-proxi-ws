@@ -65,7 +65,7 @@ public class DatasetController {
     })
     @RequestMapping(value = "/datasets", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public HttpEntity<List<IDataset>> listDatasets(@RequestParam(value = "pageSize", defaultValue = "100", required = false) Integer pageSize,
-                                                   @RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+                                                   @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
                                                    @RequestParam(value = "resultType", defaultValue = WsContastants.COMPACT, required = false) WsContastants.ResultType resultType,
                                                    @RequestParam(value = "species", required = false) String speciesStr,
                                                    @RequestParam(value = "accession", required = false) String accessionsStr,
@@ -75,7 +75,6 @@ public class DatasetController {
                                                    @RequestParam(value = "publication", required = false) String publicationsStr,
                                                    @RequestParam(value = "search", required = false) String searchStr) {
 
-        pageNumber = pageNumber - 1; //1st page as per proxi-api spec is 1 but for solr it's 0
         Tuple<Integer, Integer> facetPageParams = WsUtils.validatePageLimit(pageNumber, pageSize);
         pageNumber = facetPageParams.getKey();
         pageSize = facetPageParams.getValue();

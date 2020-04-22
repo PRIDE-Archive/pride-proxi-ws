@@ -51,3 +51,13 @@ spring.data.solr.zk-host:
 spring.pridedb.solr:
   hh.url: $solr_pridedb_hh_url
   hx.url: $solr_pridedb_hx_url
+
+# S3 keys.
+spectra.archive.s3:
+  url: $s3_url
+  accesskey: $s3_accesskey
+  secretkey: $s3_secretkey
+  bucketname: $s3_bucketname
+  region: eu-west-2
+
+cloud.aws.region.static: eu-west-2

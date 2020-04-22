@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.ws.pride.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,8 +18,11 @@ import lombok.Data;
 @Data
 @Builder
 public class OntologyTerm {
-
-    String accession;
-    String name;
-    String value;
+    private String accession;
+    private String name;
+    private String value;
+    @JsonProperty("cv_param_group")
+    private String cvParamGroup;
+    @JsonProperty("value_accession")
+    private String valueAccession;
 }
