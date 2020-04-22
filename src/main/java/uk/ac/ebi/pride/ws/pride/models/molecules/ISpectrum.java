@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.ws.pride.models;
+package uk.ac.ebi.pride.ws.pride.models.molecules;
 
 public interface ISpectrum {
 

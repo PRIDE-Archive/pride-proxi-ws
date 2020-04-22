@@ -17,7 +17,8 @@
     <properties>
         <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.4-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-tdd.version>
         <uk.ac.ebi.pride.archive.pride-solr-indexes.version>1.0.3-SNAPSHOT</uk.ac.ebi.pride.archive.pride-solr-indexes.version>
-        <uk.ac.ebi.pride.archive.pride-mongodb-repo.version>1.0.3-SNAPSHOT</uk.ac.ebi.pride.archive.pride-mongodb-repo.version>
+        <uk.ac.ebi.pride.archive.pride-mongodb-repo.version>1.0.4-SNAPSHOT
+        </uk.ac.ebi.pride.archive.pride-mongodb-repo.version>
         <uk.ac.ebi.pride.archive.data-provider.version>1.0.1-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
         <uk.ac.ebi.pride.archive.spectra-archive.version>0.0.1-SNAPSHOT</uk.ac.ebi.pride.archive.spectra-archive.version>
         <io.springfox.swagger.version>2.7.0</io.springfox.swagger.version>
