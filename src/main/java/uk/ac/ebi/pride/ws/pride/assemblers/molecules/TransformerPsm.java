@@ -33,7 +33,7 @@ public class TransformerPsm {
             CvTermReference.MS_MSGF_EVALUE.getAccession(),
             CvTermReference.MS_MSGF_QVALUE.getAccession(),
             CvTermReference.MS_MSGF_DENOVOSCORE.getAccession(),
-            CvTermReference.MS_MSGF_RAWSCORE.getAccession(), 
+            CvTermReference.MS_MSGF_RAWSCORE.getAccession(),
             CvTermReference.MS_MSGF_SPECEVALUE.getAccession(),
             CvTermReference.MS_MSGF_PEPQVALUE.getAccession(),
             CvTermReference.MS_SEQUEST_DELTA_CN.getAccession(),

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -17,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.pride.archive.spectra.services.S3SpectralArchive;
+import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.service.molecules.PrideMoleculesMongoService;
 import uk.ac.ebi.pride.utilities.util.StringUtils;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 import uk.ac.ebi.pride.ws.pride.assemblers.molecules.TransformerMongoSpectra;
 import uk.ac.ebi.pride.ws.pride.assemblers.molecules.TransformerPsm;
+import uk.ac.ebi.pride.ws.pride.models.ErrorMessage;
 import uk.ac.ebi.pride.ws.pride.models.molecules.ISpectrum;
 import uk.ac.ebi.pride.ws.pride.models.molecules.Psm;
 import uk.ac.ebi.pride.ws.pride.models.molecules.SpectrumStatus;
@@ -33,6 +36,7 @@ import uk.ac.ebi.pride.ws.pride.utils.WsUtils;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @RestController
@@ -57,7 +61,7 @@ public class SpectraController {
     @RequestMapping(value = "/spectra", method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_VALUE})
     //Todo: All the spectra retrieve methods should be done using java.util.concurrent.CompletableFuture from Spring.
-    public HttpEntity<Collection<? extends ISpectrum>> getSpectrumBy(@RequestParam(value = "usi", required = false) String usi,
+    public ResponseEntity getSpectrumBy(@RequestParam(value = "usi", required = false) String usi,
                                                                      @RequestParam(value = "peptideSequence", required = false) String peptideSequence,
                                                                      @RequestParam(value = "resultType", defaultValue = "compact") WsContastants.ResultType resultType,
                                                                      @RequestParam(value = "accession", required = false) String accession,
@@ -69,10 +73,17 @@ public class SpectraController {
         pageSize = facetPageParams.getValue();
 
         Page<PrideMongoPsmSummaryEvidence> peptides = null;
-        if (!StringUtils.isEmpty(usi))
-            peptides = moleculesMongoService
-                    .findPsmSummaryEvidences(Collections.singletonList(usi), PageRequest.of(pageNumber, pageSize));
-        else if (!StringUtils.isEmpty(accession) || !StringUtils.isEmpty(peptideSequence))
+        if (!StringUtils.isEmpty(usi)){
+            String[] usiString = usi.split(":");
+            String spectraUSI = String.join(":", usiString[0], usiString[1], usiString[2], usiString[3], usiString[4]);
+            Optional<PrideMongoPsmSummaryEvidence> psm = moleculesMongoService
+                    .findPsmSummaryEvidencesSpectraUsi(spectraUSI);
+            if (psm.isPresent())
+                peptides = new PageImpl<PrideMongoPsmSummaryEvidence>(Collections.singletonList(psm.get()), PageRequest.of(pageNumber, pageSize).first(),1);
+            else
+                peptides = moleculesMongoService.findPsmSummaryEvidences(Collections.singletonList(usi), PageRequest.of(pageNumber, pageSize));
+
+        }else if (!StringUtils.isEmpty(accession) || !StringUtils.isEmpty(peptideSequence))
             peptides = moleculesMongoService
                     .findPsmSummaryEvidences(accession, "", "", peptideSequence,
                             PageRequest.of(pageNumber, pageSize));
@@ -93,7 +104,11 @@ public class SpectraController {
             }
         });
 
-        return new HttpEntity<>(spectra);
+        if(spectra.size() == 0){
+            return new ResponseEntity<>(ErrorMessage.builder().status(HttpStatus.NOT_FOUND).detail("The usi has been found").title("ScanNotFound").build(), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity(spectra, HttpStatus.OK);
     }
 
     @ApiOperation(notes = "Get specific Peptide Spectrum Matches (PSMs) if they are present in the database and have been identified by a previous experiment in the resource.", value = "psms", nickname = "getPsms", tags = {"spectra"})
