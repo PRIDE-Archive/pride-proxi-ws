@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.pride.archive.spectra.services.S3SpectralArchive;
-import uk.ac.ebi.pride.mongodb.molecules.model.peptide.PrideMongoPeptideEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.model.psm.PrideMongoPsmSummaryEvidence;
 import uk.ac.ebi.pride.mongodb.molecules.service.molecules.PrideMoleculesMongoService;
 import uk.ac.ebi.pride.utilities.util.StringUtils;
