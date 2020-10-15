@@ -75,6 +75,9 @@ public class SpectraController {
         Page<PrideMongoPsmSummaryEvidence> peptides = null;
         if (!StringUtils.isEmpty(usi)){
             String[] usiString = usi.split(":");
+            if(usiString.length >= 5){
+                return new ResponseEntity<>(ErrorMessage.builder().status(HttpStatus.NOT_FOUND).detail("The usi has been found").title("ScanNotFound").build(), HttpStatus.NOT_FOUND);
+            }
             String spectraUSI = String.join(":", usiString[0], usiString[1], usiString[2], usiString[3], usiString[4]);
             Optional<PrideMongoPsmSummaryEvidence> psm = moleculesMongoService
                     .findPsmSummaryEvidencesSpectraUsi(spectraUSI);
