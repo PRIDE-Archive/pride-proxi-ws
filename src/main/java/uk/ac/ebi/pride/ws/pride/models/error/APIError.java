@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.ws.pride.utils;
+package uk.ac.ebi.pride.ws.pride.models.error;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;

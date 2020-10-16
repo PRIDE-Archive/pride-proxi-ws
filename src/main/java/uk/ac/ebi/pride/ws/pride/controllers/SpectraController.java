@@ -24,11 +24,11 @@ import uk.ac.ebi.pride.utilities.util.StringUtils;
 import uk.ac.ebi.pride.utilities.util.Tuple;
 import uk.ac.ebi.pride.ws.pride.assemblers.molecules.TransformerMongoSpectra;
 import uk.ac.ebi.pride.ws.pride.assemblers.molecules.TransformerPsm;
-import uk.ac.ebi.pride.ws.pride.models.ErrorMessage;
+import uk.ac.ebi.pride.ws.pride.models.error.ErrorMessage;
 import uk.ac.ebi.pride.ws.pride.models.molecules.ISpectrum;
 import uk.ac.ebi.pride.ws.pride.models.molecules.Psm;
 import uk.ac.ebi.pride.ws.pride.models.molecules.SpectrumStatus;
-import uk.ac.ebi.pride.ws.pride.utils.APIError;
+import uk.ac.ebi.pride.ws.pride.models.error.APIError;
 import uk.ac.ebi.pride.ws.pride.utils.WsContastants;
 import uk.ac.ebi.pride.ws.pride.utils.WsUtils;
 

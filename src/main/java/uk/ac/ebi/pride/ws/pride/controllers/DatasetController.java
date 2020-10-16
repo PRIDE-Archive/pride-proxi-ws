@@ -25,7 +25,7 @@ import uk.ac.ebi.pride.ws.pride.assemblers.TransformerMongoProject;
 import uk.ac.ebi.pride.ws.pride.models.Dataset;
 import uk.ac.ebi.pride.ws.pride.models.IDataset;
 import uk.ac.ebi.pride.ws.pride.models.OntologyTerm;
-import uk.ac.ebi.pride.ws.pride.utils.APIError;
+import uk.ac.ebi.pride.ws.pride.models.error.APIError;
 import uk.ac.ebi.pride.ws.pride.utils.WsContastants;
 import uk.ac.ebi.pride.ws.pride.utils.WsUtils;
 
