@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.hateoas.core.Relation;
+import uk.ac.ebi.pride.ws.pride.models.OntologyTerm;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @Data
 @XmlRootElement(name = "spectrum")
@@ -29,6 +31,8 @@ public class Spectrum implements ISpectrum {
     @JsonProperty("intensities")
     Double[] intensities;
 
+    @JsonProperty("attributes")
+    List<OntologyTerm> attributes;
 
     @Override
     public String getUsi() {
