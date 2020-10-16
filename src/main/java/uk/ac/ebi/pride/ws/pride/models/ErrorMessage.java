@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public class ErrorMessage {
 
     String detail;
-    HttpStatus status;
+    int status;
     String title;
     String type;
 }

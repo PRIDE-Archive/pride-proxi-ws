@@ -76,7 +76,7 @@ public class SpectraController {
             String[] usiString = usi.split(":");
             if(usiString.length < 5){
                 return new ResponseEntity<>(ErrorMessage.builder()
-                        .status(HttpStatus.BAD_REQUEST).detail("The usi provided is not valid").title("BadUSIRequest").build(), HttpStatus.BAD_REQUEST);
+                        .status(HttpStatus.BAD_REQUEST.value()).detail("The usi provided is not valid").title("BadUSIRequest").build(), HttpStatus.BAD_REQUEST);
             }
             String spectraUSI = String.join(":", usiString[0], usiString[1], usiString[2], usiString[3], usiString[4]);
             Optional<PrideMongoPsmSummaryEvidence> psm = moleculesMongoService
@@ -108,7 +108,10 @@ public class SpectraController {
         });
 
         if(spectra.size() == 0){
-            return new ResponseEntity<>(ErrorMessage.builder().status(HttpStatus.NOT_FOUND).detail("The usi has been found").title("ScanNotFound").build(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ErrorMessage.builder()
+                    .status(HttpStatus.NOT_FOUND.value()).detail("The usi has been found")
+                    .title("ScanNotFound").build(),
+                    HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity(spectra, HttpStatus.OK);
