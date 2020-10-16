@@ -48,7 +48,7 @@ public class ArchiveAPITest {
     /*Projects API Tests*/
 
     @Test
-    public void getAllProjectsTest() throws Exception {
+    public void getAllProjectsTest() {
 //        this.mockMvc.perform(MockMvcRequestBuilders.get("/datasets?pageSize=5&pageNumber=1").accept(MediaType.APPLICATION_JSON))
 //                .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andDo(MockMvcRestDocumentation.document("get-all-datasets", Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
