@@ -15,16 +15,25 @@
     <name>PRIDE Archive PROXI WS</name>
 
     <properties>
-        <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.4-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-tdd.version>
-        <uk.ac.ebi.pride.archive.pride-solr-indexes.version>1.0.3-SNAPSHOT</uk.ac.ebi.pride.archive.pride-solr-indexes.version>
+        <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.4-SNAPSHOT
+        </uk.ac.ebi.pride.architectural-pride-tdd.version>
+        <uk.ac.ebi.pride.archive.pride-solr-indexes.version>1.0.3-SNAPSHOT
+        </uk.ac.ebi.pride.archive.pride-solr-indexes.version>
         <uk.ac.ebi.pride.archive.pride-mongodb-repo.version>1.0.4-SNAPSHOT
         </uk.ac.ebi.pride.archive.pride-mongodb-repo.version>
         <uk.ac.ebi.pride.archive.data-provider.version>1.0.1-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
-        <uk.ac.ebi.pride.archive.spectra-archive.version>0.0.1-SNAPSHOT</uk.ac.ebi.pride.archive.spectra-archive.version>
+        <uk.ac.ebi.pride.archive.spectra-archive.version>0.0.1-SNAPSHOT
+        </uk.ac.ebi.pride.archive.spectra-archive.version>
         <io.springfox.swagger.version>2.7.0</io.springfox.swagger.version>
+        <cpdetector>1.0.7</cpdetector>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>cpdetector</groupId>
+            <artifactId>cpdetector</artifactId>
+            <version>${cpdetector}</version>
+        </dependency>
 
         <!-- TDD -->
         <dependency>
@@ -43,6 +52,11 @@
                 <exclusion>
                     <groupId>uk.ac.ebi.pride.archive</groupId>
                     <artifactId>data-provider-api</artifactId>
+                </exclusion>
+                <!-- exclude this as this fails to download from maven a lot. Instead include it separately-->
+                <exclusion>
+                    <groupId>net.sourceforge.cpdetector</groupId>
+                    <artifactId>cpdetector</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -248,6 +262,10 @@
             <id>pst-snapshots</id>
             <name>EBI Nexus Snapshots Repository</name>
             <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
+        </repository>
+        <repository>
+            <id>nexus-ebi-intact-repo</id>
+            <url>https://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
         </repository>
     </repositories>
 
