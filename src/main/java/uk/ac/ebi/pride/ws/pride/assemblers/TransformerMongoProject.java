@@ -60,7 +60,7 @@ public class TransformerMongoProject implements Function<MongoPrideProject, IDat
      */
     private IDataset transformCompact(MongoPrideProject mongoPrideProject) {
         CompactDataset dataset = new CompactDataset();
-        dataset.setAccession(createAccession(mongoPrideProject.getAccession()));
+        dataset.setIdentifiers(createIdentifiers(mongoPrideProject.getAccession()));
         dataset.setTitle(mongoPrideProject.getTitle());
         dataset.setSpecies(transformSpecies(mongoPrideProject.getSamplesDescription()));
         dataset.setInstruments(transformInstruments(mongoPrideProject.getInstrumentsCvParams()));
@@ -79,15 +79,15 @@ public class TransformerMongoProject implements Function<MongoPrideProject, IDat
         Dataset dataset = new Dataset();
         dataset.setSummary(mongoPrideProject.getDescription());
         dataset.setTitle(mongoPrideProject.getTitle());
-        dataset.setAccession(createAccession(mongoPrideProject.getAccession()));
+        dataset.setIdentifiers(createIdentifiers(mongoPrideProject.getAccession()));
         dataset.setKeywords(transformKeywords(mongoPrideProject.getKeywords(), mongoPrideProject.getProjectTags()));
         dataset.setModifications(transformModifications(mongoPrideProject.getPtmList()));
-        dataset.setDatasetLink(transformDatasetLink(mongoPrideProject.getAccession()));
+        dataset.setDatasetLinks(transformDatasetLink(mongoPrideProject.getAccession()));
         return dataset;
 
     }
 
-    private List<OntologyTerm> createAccession(String accession) {
+    private List<OntologyTerm> createIdentifiers(String accession) {
         OntologyTerm ontologyTerm = OntologyTerm.builder()
                 .name("ProteomeXchange accession number")
                 .accession("MS:1001919")
@@ -199,12 +199,15 @@ public class TransformerMongoProject implements Function<MongoPrideProject, IDat
                 .collect(Collectors.toList());
     }
 
-    private OntologyTerm transformDatasetLink(String accession) {
-        return OntologyTerm.builder()
+    private List<OntologyTerm> transformDatasetLink(String accession) {
+        OntologyTerm ontologyTerm = OntologyTerm.builder()
                 .accession(CvTermReference.MS_DATASET_LINK_HTTP.getAccession())
                 .name(CvTermReference.MS_DATASET_LINK_HTTP.getName())
                 .value(WsContastants.DATASET_LINK_HTTP + accession)
                 .build();
+        ArrayList<OntologyTerm> ontologyTerms = new ArrayList<>();
+        ontologyTerms.add(ontologyTerm);
+        return ontologyTerms;
     }
 
     private Set<OntologyTerm> transformModifications(Collection<CvParam> ptmList) {

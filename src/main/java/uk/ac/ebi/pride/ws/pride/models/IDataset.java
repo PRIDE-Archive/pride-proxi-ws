@@ -22,7 +22,7 @@ public interface IDataset {
      *
      * @return Dataset Accession
      */
-    List<OntologyTerm> getAccession();
+    List<OntologyTerm> getIdentifiers();
 
     /**
      * Get contacts related with the dataset

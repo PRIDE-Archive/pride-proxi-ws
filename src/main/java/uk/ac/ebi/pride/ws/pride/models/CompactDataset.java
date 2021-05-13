@@ -23,8 +23,8 @@ import java.util.*;
 public class CompactDataset implements Serializable, PrideArchiveAPIField, IDataset {
 
     @XmlElement
-    @JsonProperty(PRIDE_PROJECT_ACCESSION)
-    private List<OntologyTerm> accession;
+    @JsonProperty(PRIDE_PROJECT_IDENTIFIERS)
+    private List<OntologyTerm> identifiers;
 
     @JsonProperty(PRIDE_PROJECT_TITLE)
     private String title;
@@ -44,8 +44,8 @@ public class CompactDataset implements Serializable, PrideArchiveAPIField, IData
     public CompactDataset() {
     }
 
-    public CompactDataset(List<OntologyTerm> accession, String title, Collection<Contact> contacts, Collection<OntologyTerm> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications) {
-        this.accession = accession;
+    public CompactDataset(List<OntologyTerm> identifiers, String title, Collection<Contact> contacts, Collection<OntologyTerm> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications) {
+        this.identifiers = identifiers;
         this.title = title;
         this.contacts = contacts;
         this.instruments = instruments;

@@ -29,7 +29,7 @@ import java.util.*;
 @Relation(collectionRelation = "datasets")
 public class Dataset extends CompactDataset{
 
-    @JsonProperty(PRIDE_PROJECT_SUMMARY)
+    @JsonProperty(PRIDE_PROJECT_DESCRIPTION)
     private String summary;
 
     @JsonProperty(PRIDE_PROJECT_PTMS)
@@ -39,7 +39,7 @@ public class Dataset extends CompactDataset{
     private Collection<OntologyTerm> keywords;
 
     @JsonProperty(PRIDE_PROJECT_DATASETLINK)
-    private OntologyTerm datasetLink;
+    private List<OntologyTerm> datasetLinks;
 
     @JsonProperty(PRIDE_DATA_FILE)
     private List<OntologyTerm> dataFiles = new ArrayList<>();
@@ -52,24 +52,25 @@ public class Dataset extends CompactDataset{
 
     /**
      * Dataset constructor with all Dataset attributes
-     * @param accession Accession
-     * @param title Title
-     * @param contacts Constants
-     * @param instruments instruments
-     * @param species species
-     * @param publications publications
-     * @param summary summary
+     *
+     * @param identifiers   identifiers
+     * @param title         Title
+     * @param contacts      Constants
+     * @param instruments   instruments
+     * @param species       species
+     * @param publications  publications
+     * @param summary       summary
      * @param modifications modifications
-     * @param keywords keywords
-     * @param datasetLink datasetLink
-     * @param dataFiles dataFiles
+     * @param keywords      keywords
+     * @param datasetLinks  datasetLinks
+     * @param dataFiles     dataFiles
      */
-    public Dataset(List<OntologyTerm> accession, String title, Collection<Contact> contacts, Collection<OntologyTerm> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications, String summary, Set<OntologyTerm> modifications, Collection<OntologyTerm> keywords, OntologyTerm datasetLink, List<OntologyTerm> dataFiles) {
-        super(accession, title, contacts, instruments, species, publications);
+    public Dataset(List<OntologyTerm> identifiers, String title, Collection<Contact> contacts, Collection<OntologyTerm> instruments, Collection<? extends OntologyTerm> species, Set<Publication> publications, String summary, Set<OntologyTerm> modifications, Collection<OntologyTerm> keywords, List<OntologyTerm> datasetLinks, List<OntologyTerm> dataFiles) {
+        super(identifiers, title, contacts, instruments, species, publications);
         this.summary = summary;
         this.modifications = modifications;
         this.keywords = keywords;
-        this.datasetLink = datasetLink;
+        this.datasetLinks = datasetLinks;
         this.dataFiles = dataFiles;
     }
 }

@@ -144,11 +144,11 @@ public class DatasetController {
                 .map(new TransformerMongoProject(resultType)).collect(Collectors.toList());
 
         if (resultType == WsContastants.ResultType.full) {
-            List<List<OntologyTerm>> accessions = datasets.stream().map(IDataset::getAccession).collect(Collectors.toList());
-            List<String> accessionsStrs = accessions.stream().flatMap(List::stream).map(OntologyTerm::getValue).collect(Collectors.toList());
+            List<List<OntologyTerm>> identifiers = datasets.stream().map(IDataset::getIdentifiers).collect(Collectors.toList());
+            List<String> accessionsStrs = identifiers.stream().flatMap(List::stream).map(OntologyTerm::getValue).collect(Collectors.toList());
             List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccessions(accessionsStrs);
             datasets.forEach(x -> {
-                List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(x.getAccession().get(0).getValue())).collect(Collectors.toList());
+                List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(x.getIdentifiers().get(0).getValue())).collect(Collectors.toList());
                 ((Dataset) x).setDataFiles(files.stream()
                         .map(file -> {
                             String value = "";
@@ -190,9 +190,9 @@ public class DatasetController {
             dataset = new TransformerMongoProject(WsContastants.ResultType.full).apply(mongoPrideProject.get());
 
         if (dataset != null) {
-            List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccession(dataset.getAccession().get(0).getValue());
+            List<MongoPrideFile> mongoFiles = mongoFileService.findFilesByProjectAccession(dataset.getIdentifiers().get(0).getValue());
             IDataset finalDataset = dataset;
-            List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(finalDataset.getAccession().get(0).getValue())).collect(Collectors.toList());
+            List<MongoPrideFile> files = mongoFiles.stream().filter(y -> y.getProjectAccessions().contains(finalDataset.getIdentifiers().get(0).getValue())).collect(Collectors.toList());
             ((Dataset) dataset).setDataFiles(files.stream()
                     .map(file -> {
                         String value = "";

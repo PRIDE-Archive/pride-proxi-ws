@@ -15,8 +15,10 @@ package uk.ac.ebi.pride.ws.pride.models;
  */
 public interface PrideArchiveAPIField {
     String PRIDE_PROJECT_ACCESSION = "accession";
-    String PRIDE_PROJECT_TITLE     = "title";
-    String PRIDE_PROJECT_SUMMARY   = "summary";
+    String PRIDE_PROJECT_IDENTIFIERS = "identifiers";
+    String PRIDE_PROJECT_TITLE = "title";
+    String PRIDE_PROJECT_SUMMARY = "summary";
+    String PRIDE_PROJECT_DESCRIPTION = "description";
     String PRIDE_PROJECT_KEYWORDS = "keywords";
     String PRIDE_PROJECT_CONTACTS = "contacts";
     String PRIDE_PROJECT_INSTRUMENTS = "instruments";
@@ -25,8 +27,8 @@ public interface PrideArchiveAPIField {
     String PRIDE_PROJECT_DISEASES = "diseases";
     String PRIDE_PROJECT_PUBLICATIONS = "publications";
     String PRIDE_PROJECT_PTMS = "modifications";
-    String PRIDE_PROJECT_DATASETLINK = "datasetLink";
-    String PRIDE_DATA_FILE = "dataFiles";
+    String PRIDE_PROJECT_DATASETLINK = "fullDatasetLinks";
+    String PRIDE_DATA_FILE = "datasetFiles";
     String CONTACT_PROPERTIES = "contactProperties";
     String PUBLICATION_PROPERTIES = "publicationProperties";
 
